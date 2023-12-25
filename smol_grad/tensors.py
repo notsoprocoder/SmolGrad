@@ -28,6 +28,7 @@ class Element(object):
         if isinstance(other, Element): return Element(other).value == self.value 
         return False
 
+
 class Vector(object):
     def __init__(self, values: list[int | float | Element] | Vector):
         self.idx = 0
