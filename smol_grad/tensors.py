@@ -4,6 +4,7 @@ from typing import Iterator
 class Element(object):
     def __init__(self, value: float | int):
         if isinstance(value, Element): self.value = value.value
+        elif isinstance(value, bool): self.value = int(bool)
         else: self.value = value
     def __repr__(self) -> str: return str(self.value)
     def __sub__(self, other: Element) -> Element: return self.__add__(Element(-1)*other)
@@ -27,6 +28,23 @@ class Element(object):
     def __eq__(self, other: Element | float | int) -> bool:
         if isinstance(other, Element): return Element(other).value == self.value 
         return False
+    
+    def __gt__(self, other: Element) -> Element | Vector | Matrix:
+        if isinstance(other, (int, float)): return self.value > other
+        elif isinstance(other, Element): return self.value > other.value 
+        elif isinstance(other, Vector): return Vector([self.value > v.value for v in other])
+        elif isinstance(other, Matrix): return Matrix([self>r for r in other])
+        raise TypeError(f"{type(other)} cannot use addition operator with Element.")
+    
+    def __lt__(self, other: Element) -> Element | Vector | Matrix:
+        if isinstance(other, (int, float)): return self.value < other
+        elif isinstance(other, Element): return self.value < other.value
+        elif isinstance(other, Vector): return Vector([self.value < v.value for v in other])
+        elif isinstance(other, Matrix): return Matrix([self<r for r in other])
+        raise TypeError(f"{type(other)} cannot use addition operator with Element.")
+
+    @staticmethod
+    def parse_bool(b: bool) -> Element: return Element(1) if b else Element(0)
 
 
 class Vector(object):
