@@ -9,11 +9,8 @@ class Dataset(object):
         self.idx: list = list(range(len(X)))
         self.X: list[Vector] = X
         self.y: list = y
-        
-    def __getitem__(self, k: int | str):
-        if isinstance(k, str): k = self.labels.index(str)
-        return (self.X[k], self.y[k])
-
+    def __getitem__(self, k: int | str): return (self.X[k], self.y[k])
+    def _getcol(self, k: str) -> Vector: idx=self.cols.index(k); return Vector([v[idx] for v in self.X])
     def sample(self, n: int = 1): 
         _idx = random.sample(self.idx, k=n)
         return [self[i] for i in _idx]
