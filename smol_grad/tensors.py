@@ -6,6 +6,7 @@ class Element(object):
         if isinstance(value, Element): self.value = value.value
         elif isinstance(value, bool): self.value = int(bool)
         else: self.value = value
+        self.grad: float = None
     def __repr__(self) -> str: return str(self.value)
     def __sub__(self, other: Element) -> Element: return self.__add__(Element(-1)*other)
     def __radd__(self, other: Element) -> Element: return self.__add__(other)
@@ -54,6 +55,7 @@ class Vector(object):
         else: self.values = [Element(v) for v in values]
     def __repr__(self) -> str: return str([v.value for v in self.values])
     def __radd__(self, other: Element | Vector) -> Element | Vector: return self.__add__(other)
+    def __sub__(self, other: Element | Vector) -> Element | Vector: return self.__add__(Element(-1)*other)
     def __len__(self) -> int: return len(self.values)
     def __getitem__(self, k) -> Element: return self.values[k]
     def __next__(self) -> Element: self.idx += 1; return self.values[self.idx]

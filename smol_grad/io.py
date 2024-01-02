@@ -4,11 +4,15 @@ import csv
 from smol_grad.tensors import Vector
 
 class Dataset(object):
-    def __init__(self, cols: list, X: list[Vector], y: list):
+    def __init__(self, cols: list, X: list[Vector], y: list, num_classes: int = 10):
         self.cols = cols
         self.idx: list = list(range(len(X)))
         self.X: list[Vector] = X
-        self.y: list = y
+        self.y: list = [[0 for i in range(num_classes)] for j in y]
+        for v, i in zip(self.y, y):
+            v[i]=1
+        self.y = [Vector(v) for v in self.y]
+            
     def __getitem__(self, k: int | str): return (self.X[k], self.y[k])
     def _getcol(self, k: str) -> Vector: idx=self.cols.index(k); return Vector([v[idx] for v in self.X])
     def sample(self, n: int = 1): 
