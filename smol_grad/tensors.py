@@ -91,6 +91,7 @@ class Matrix(object):
     def __next__(self) -> Element: self.idx += 1; return self.rows[self.idx]
     def _get_col(self, c_idx: int) -> Vector: return Vector([r[c_idx] for r in self])
     def _transpose(self) -> Matrix: return Matrix([self._get_col(i) for i in range(self.shape[0])])
+    # def _diag(self) -> Matrix: return Matrix([e if i!=j else Element(0) for r in self for e in r])
     def __iter__(self) -> Iterator[Vector]:
         for r in self.rows:
             yield r 
